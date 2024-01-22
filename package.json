@@ -1,6 +1,6 @@
 {
   "name": "nuxt-papa-parse",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Wrapper for Papa parse to use in Nuxt",
   "repository": "your-org/my-module",
   "license": "MIT",
