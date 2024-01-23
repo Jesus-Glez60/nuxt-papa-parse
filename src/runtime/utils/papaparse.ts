@@ -1,3 +1,3 @@
-import * as Papa from "papaparse";
+import Papa from "#build/papaparse.imports.mjs";
 
 export const $papa = Papa;

@@ -1,13 +1,18 @@
 import {
   addImportsDir,
-  addPlugin,
+  addTemplate,
   createResolver,
   defineNuxtModule,
 } from "@nuxt/kit";
-import { fileURLToPath } from "node:url";
-
 // Module options TypeScript interface definition
 export interface ModuleOptions {
+  /**
+   * Makes the `$papa` object available globally.
+   * @default false
+   * usage:
+   * ```ts
+   * $papa.parse(csvString, parseOptions);
+   */
   global?: boolean;
 }
 
@@ -23,16 +28,26 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     global: false,
   },
-  setup(options, nuxt) {
+  setup(options) {
     const { resolve } = createResolver(import.meta.url);
-    const runtimeDir = fileURLToPath(new URL("./runtime", import.meta.url));
 
-    nuxt.options.build.transpile.push(runtimeDir);
-
-    addImportsDir(resolve(runtimeDir, "composables"));
+    addImportsDir(resolve("./runtime/composables"));
 
     if (options.global) {
-      addImportsDir(resolve(runtimeDir, "utils"));
+      addImportsDir(resolve("./runtime/utils"));
     }
+
+    addTemplate({
+      filename: "papaparse.imports.mjs",
+      getContents: () => generateImports(),
+      write: true,
+    });
   },
 });
+
+const generateImports = () => `
+//Generate by nuxt-papa-parse module
+  import * as Papa from "papaparse";
+
+  export default Papa
+`;
