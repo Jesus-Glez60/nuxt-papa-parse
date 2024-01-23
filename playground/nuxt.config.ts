@@ -1,5 +1,7 @@
 export default defineNuxtConfig({
   modules: ["../src/module"],
-  papaparse: {},
+  papaparse: {
+    global: true,
+  },
   devtools: { enabled: true },
 });

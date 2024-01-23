@@ -1,27 +1,35 @@
-import { addPlugin, createResolver, defineNuxtModule } from "@nuxt/kit";
+import {
+  addImportsDir,
+  addPlugin,
+  createResolver,
+  defineNuxtModule,
+} from "@nuxt/kit";
 import { fileURLToPath } from "node:url";
 
 // Module options TypeScript interface definition
-export interface ModuleOptions {}
+export interface ModuleOptions {
+  global?: boolean;
+}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: "nuxt-papa-parse",
     configKey: "papaparse",
+    compatibility: {
+      nuxt: "^3.0.0-rc.9",
+    },
   },
   // Default configuration options of the Nuxt module
-  defaults: {},
-  setup(options, nuxt) {
+  defaults: {
+    global: false,
+  },
+  setup(options) {
     const { resolve } = createResolver(import.meta.url);
-    const runtimeDir = fileURLToPath(new URL("./runtime", import.meta.url));
 
-    nuxt.options.build.transpile.push(runtimeDir);
+    addImportsDir(resolve("./runtime/composables"));
 
-    // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
-    addPlugin(resolve(runtimeDir, "plugin"));
-
-    nuxt.hook("imports:dirs", (dirs) => {
-      dirs.push(resolve(runtimeDir, "composables"));
-    });
+    if (options.global) {
+      addImportsDir(resolve("./runtime/utils"));
+    }
   },
 });

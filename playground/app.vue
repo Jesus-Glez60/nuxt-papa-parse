@@ -11,8 +11,6 @@
 </template>
 
 <script setup lang="ts">
-const papa = usePapaParse();
-
 const csvData = ref<string | null>(null);
 const handleFileChange = (event: Event) => {
   const file: File | null =
@@ -36,7 +34,7 @@ const readCsv = (file: File) => {
 };
 
 const transformCsvToJson = (csv: string) => {
-  papa.parse(csv, {
+  $papa.parse(csv, {
     headers: true,
     complete: (result) => {
       csvData.value = JSON.stringify(result.data, null, 2);
