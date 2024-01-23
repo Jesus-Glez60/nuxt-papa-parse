@@ -23,13 +23,16 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     global: false,
   },
-  setup(options) {
+  setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url);
+    const runtimeDir = fileURLToPath(new URL("./runtime", import.meta.url));
 
-    addImportsDir(resolve("./runtime/composables"));
+    nuxt.options.build.transpile.push(runtimeDir);
+
+    addImportsDir(resolve(runtimeDir, "composables"));
 
     if (options.global) {
-      addImportsDir(resolve("./runtime/utils"));
+      addImportsDir(resolve(runtimeDir, "utils"));
     }
   },
 });

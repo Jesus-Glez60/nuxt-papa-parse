@@ -2,7 +2,11 @@
   <main>
     <h1>Use a csv file to test papa parser</h1>
 
-    <input type="file" aria-label="Upload CSV" @change="handleFileChange" />
+    <input
+      type="file"
+      aria-label="Upload CSV"
+      @change="handleFileChange"
+    >
 
     <div v-if="csvData">
       <pre>{{ csvData }}</pre>
