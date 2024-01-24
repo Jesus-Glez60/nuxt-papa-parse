@@ -1,5 +1,6 @@
 import {
   addImportsDir,
+  addPlugin,
   addTemplate,
   createResolver,
   defineNuxtModule,
@@ -30,6 +31,8 @@ export default defineNuxtModule<ModuleOptions>({
   },
   setup(options) {
     const { resolve } = createResolver(import.meta.url);
+
+    addPlugin(resolve("./runtime/plugin"));
 
     addImportsDir(resolve("./runtime/composables"));
 
